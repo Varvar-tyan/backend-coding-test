@@ -1,0 +1,19 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true,
+    "commonjs": true,
+    "mocha": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 12
+  },
+  "rules": {
+    "semi": [2, "always"],
+    "max-len": ["error", {"code": 120}],
+    "object-curly-spacing": ["error", "never"]
+  }
+}
