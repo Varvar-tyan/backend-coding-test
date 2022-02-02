@@ -36,7 +36,7 @@ The application goal is creating and retrieving `Rides` entities from the databa
                  "riderName": "Rider",
                  "driverName": "Driver",
                  "driverVehicle": "Vehicle",
-                 "created": "2007-04-30 13:10:02.047"
+                 "created": "2007-04-30 13:10:02"
              },     
              {
                  "rideID": 2,
@@ -47,7 +47,7 @@ The application goal is creating and retrieving `Rides` entities from the databa
                  "riderName": "Rider",
                  "driverName": "Driver",
                  "driverVehicle": "Vehicle",
-                 "created": "2007-04-30 13:10:02.047"
+                 "created": "2007-04-30 13:10:02"
              }
           ]
           ```
@@ -66,6 +66,7 @@ The application goal is creating and retrieving `Rides` entities from the databa
         ```
       - Sample response:
         ```
+        [
           {
               "rideID": 1,
               "startLat": 1,
@@ -75,25 +76,27 @@ The application goal is creating and retrieving `Rides` entities from the databa
               "riderName": "Rider",
               "driverName": "Driver",
               "driverVehicle": "Vehicle",
-              "created": "2007-04-30 13:10:02.047"
+              "created": "2007-04-30 13:10:02"
           }
+        ]
         ```
         
     
 - `/rides/:id`
     - **GET** - retrieve one of the `Rides` entities with a specified id.
         - Sample response:
-          ```        
-          {
-              "rideID": 1,
-              "startLat": 1,
-              "startLong": 1,
-              "endLat": 6,
-              "endLong": 6,
-              "riderName": "Rider",
-              "driverName": "Driver",
-              "driverVehicle": "Vehicle",
-              "created": "2007-04-30 13:10:02.047"
-          }
           ```
-        
+          [        
+            {
+               "rideID": 1,
+               "startLat": 1,
+               "startLong": 1,
+               "endLat": 6,
+               "endLong": 6,
+               "riderName": "Rider",
+               "driverName": "Driver",
+               "driverVehicle": "Vehicle",
+               "created": "2007-04-30 13:10:02"
+            }
+          ]
+          ```
