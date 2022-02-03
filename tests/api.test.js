@@ -194,7 +194,6 @@ describe('API tests', () => {
           .get('/rides?limit=40')
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => {
-            console.log(res.body);
             expect(res.body.length).to.eql(40);
           })
           .expect(200, done);
@@ -205,7 +204,6 @@ describe('API tests', () => {
           .get('/rides')
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => {
-            console.log(res.body);
             expect(res.body.length).to.eql(50);
           })
           .expect(200, done);
