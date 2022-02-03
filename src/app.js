@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 const logger = require('./logger');
 const jsonParser = bodyParser.json();
 
+const DEFAULT_OFFSET = 0;
+const DEFAULT_LIMIT = 50;
+
 module.exports = (db) => {
   app.get('/health', (req, res) => res.send('Healthy'));
 
@@ -93,7 +96,10 @@ module.exports = (db) => {
   });
 
   app.get('/rides', (req, res) => {
-    db.all('SELECT * FROM Rides', function(err, rows) {
+    const offset = req.query.offset || DEFAULT_OFFSET;
+    const limit = req.query.limit || DEFAULT_LIMIT;
+
+    db.all('SELECT * FROM Rides ORDER BY rideID LIMIT ? OFFSET ?', limit, offset, function(err, rows) {
       if (err) {
         logger.error(err);
         return res.send({
