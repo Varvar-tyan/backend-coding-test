@@ -175,4 +175,38 @@ describe('API tests', () => {
           .expect(200, done);
     });
   });
+
+  describe('/rides GET pagination', () => {
+    before( (done) => {
+      // adds more Rides to the database
+      const postRide = (agent, i = 50) => {
+        agent.post('/rides').send(SAMPLE_REQUEST_BODY).end(() => {
+          i--;
+          i > 0 ? postRide(agent, i) : done();
+        });
+      };
+      postRide(request(app));
+    },
+    );
+
+    it('should return the number of Rides entities stated in a limit parameter', (done) => {
+      request(app)
+          .get('/rides?limit=40')
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .expect((res) => {
+            expect(res.body.length).to.eql(40);
+          })
+          .expect(200, done);
+    });
+
+    it('should return the default number of Rides entities if no limit parameter is provided', (done) => {
+      request(app)
+          .get('/rides')
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .expect((res) => {
+            expect(res.body.length).to.eql(50);
+          })
+          .expect(200, done);
+    });
+  });
 });

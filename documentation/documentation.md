@@ -24,6 +24,9 @@ The application goal is creating and retrieving `Rides` entities from the databa
 
 - `/rides`
     - **GET** - retrieve all the existing `Rides` entities.
+        - Query parameters:
+          - *offset* - the number of records to skip; the server defaults to 0
+          - *limit* - the number of records to retrieve; the server defaults to 50
         - Sample response:
           ```
           [           
