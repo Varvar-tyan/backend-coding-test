@@ -2,15 +2,21 @@
 
 const port = 8010;
 const app = require('./src/app');
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database(':memory:');
-const buildSchemas = require('./src/schemas');
+
+const init = require('./src/database');
 const logger = require('./src/logger');
+const sqlite3 = require('sqlite3');
 
-db.serialize(() => {
-  buildSchemas(db);
+const main = async () => {
+  try {
+    sqlite3.verbose();
+    const db = await init();
 
-  const server = app(db);
+    const server = app(db);
+    server.listen(port, () => logger.info(`App started and listening on port ${port}`));
+  } catch (err) {
+    logger.error(err);
+  }
+};
 
-  server.listen(port, () => logger.info(`App started and listening on port ${port}`));
-});
+main();
