@@ -3,11 +3,8 @@
 const request = require('supertest');
 const expect = require('chai').expect;
 
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database(':memory:');
-
-const app = require('../src/app')(db);
-const buildSchemas = require('../src/schemas');
+const database = require('../src/database/database');
+const app = require('../src/app');
 
 const RIDES_NOT_FOUND_ERROR = {
   error_code: 'RIDES_NOT_FOUND_ERROR',
@@ -57,16 +54,8 @@ const FIELDS_TO_CHECK = {
 };
 
 describe('API tests', () => {
-  before((done) => {
-    db.serialize((err) => {
-      if (err) {
-        return done(err);
-      }
-
-      buildSchemas(db);
-
-      done();
-    });
+  before(async () => {
+    await database.init();
   });
 
   describe('/health', () => {
