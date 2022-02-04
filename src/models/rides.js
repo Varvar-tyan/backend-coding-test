@@ -1,3 +1,5 @@
+'use strict';
+
 const rideModel = (rideDTO) => ({
   start_lat: Number(rideDTO.start_lat),
   start_long: Number(rideDTO.start_long),

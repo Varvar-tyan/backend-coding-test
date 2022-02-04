@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 
 // eslint-disable-next-line new-cap

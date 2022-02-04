@@ -1,3 +1,5 @@
+'use strict';
+
 const logger = require('../utils/logger');
 const service = require('../services/rides');
 const rideSchema = require('../validation/rides');
