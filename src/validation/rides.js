@@ -1,4 +1,5 @@
 const Schema = require('validate');
+const {START_COORDINATES_ERROR, END_COORDINATES_ERROR, RIDER_ERROR} = require('../utils/consts/error-messages');
 
 const rideSchema = new Schema({
   start_lat: {
@@ -8,7 +9,7 @@ const rideSchema = new Schema({
       min: -90,
       max: 90,
     },
-    message: 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
+    message: START_COORDINATES_ERROR,
   },
   start_long: {
     type: Number,
@@ -17,7 +18,7 @@ const rideSchema = new Schema({
       min: -180,
       max: 180,
     },
-    message: 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
+    message: START_COORDINATES_ERROR,
   },
   end_lat: {
     type: Number,
@@ -26,7 +27,7 @@ const rideSchema = new Schema({
       min: -90,
       max: 90,
     },
-    message: 'End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
+    message: END_COORDINATES_ERROR,
   },
   end_long: {
     type: Number,
@@ -35,7 +36,7 @@ const rideSchema = new Schema({
       min: -180,
       max: 180,
     },
-    message: 'End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
+    message: END_COORDINATES_ERROR,
   },
   rider_name: {
     type: String,
@@ -43,7 +44,7 @@ const rideSchema = new Schema({
     length: {
       min: 1,
     },
-    message: 'Rider name must be a non empty string',
+    message: RIDER_ERROR,
   },
   driver_name: {
     type: String,
@@ -51,7 +52,7 @@ const rideSchema = new Schema({
     length: {
       min: 1,
     },
-    message: 'Rider name must be a non empty string',
+    message: RIDER_ERROR,
   },
   driver_vehicle: {
     type: String,
@@ -59,7 +60,7 @@ const rideSchema = new Schema({
     length: {
       min: 1,
     },
-    message: 'Rider name must be a non empty string',
+    message: RIDER_ERROR,
   },
 });
 

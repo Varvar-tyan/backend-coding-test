@@ -1,14 +1,14 @@
 'use strict';
 
-const logger = require('../utils/logger');
 const service = require('../services/rides');
 const rideSchema = require('../validation/rides');
 const rideModel = require('../models/rides');
+const {DEFAULT_OFFSET, DEFAULT_LIMIT} = require('../utils/consts/pagination');
+const {RIDES_NOT_FOUND_ERROR, VALIDATION_ERROR} = require('../utils/consts/error-codes');
+const {NO_RIDES_MESSAGE} = require('../utils/consts/error-messages');
 
-const DEFAULT_OFFSET = 0;
-const DEFAULT_LIMIT = 50;
 
-const findAllRides = async (req, res) => {
+const findAllRides = async (req, res, next) => {
   try {
     const offset = req.query.offset || DEFAULT_OFFSET;
     const limit = req.query.limit || DEFAULT_LIMIT;
@@ -16,48 +16,40 @@ const findAllRides = async (req, res) => {
     const rows = await service.findAllRides(offset, limit);
     if (rows.length === 0) {
       return res.send({
-        error_code: 'RIDES_NOT_FOUND_ERROR',
-        message: 'Could not find any rides',
+        error_code: RIDES_NOT_FOUND_ERROR,
+        message: NO_RIDES_MESSAGE,
       });
     }
 
     res.send(rows);
   } catch (err) {
-    logger.error(err);
-    return res.send({
-      error_code: 'SERVER_ERROR',
-      message: 'Unknown error',
-    });
+    next(err);
   }
 };
 
-const findRideByID = async (req, res) => {
+const findRideByID = async (req, res, next) => {
   try {
     const rows = await service.findRideByID(req.params.id);
     if (rows.length === 0) {
       return res.send({
-        error_code: 'RIDES_NOT_FOUND_ERROR',
-        message: 'Could not find any rides',
+        error_code: RIDES_NOT_FOUND_ERROR,
+        message: NO_RIDES_MESSAGE,
       });
     }
 
     res.send(rows);
   } catch (err) {
-    logger.error(err);
-    return res.send({
-      error_code: 'SERVER_ERROR',
-      message: 'Unknown error',
-    });
+    next(err);
   }
 };
 
-const createRide = async (req, res) => {
+const createRide = async (req, res, next) => {
   try {
     const errors = rideSchema.validate(rideModel(req.body));
 
     if (errors.length) {
       return res.send({
-        error_code: 'VALIDATION_ERROR',
+        error_code: VALIDATION_ERROR,
         message: errors[0].message,
       });
     }
@@ -69,11 +61,7 @@ const createRide = async (req, res) => {
 
     res.send(rows);
   } catch (err) {
-    logger.error(err);
-    return res.send({
-      error_code: 'SERVER_ERROR',
-      message: 'Unknown error',
-    });
+    next(err);
   }
 };
 
