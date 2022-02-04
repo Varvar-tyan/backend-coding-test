@@ -1,6 +1,8 @@
 'use strict';
 
-const port = 8010;
+require('dotenv').config();
+
+const port = process.env.PORT;
 const app = require('./src/app');
 
 const database = require('./src/database/database');
