@@ -57,9 +57,9 @@ const SAMPLE_INJECTION = {
   'start_long': 1,
   'end_lat': 6,
   'end_long': 6,
-  'rider_name': 'Rider',
-  'driver_name': 'Driver',
-  'driver_vehicle': 'Vehicle',
+  'rider_name': ';DROP TABLE Rides;',
+  'driver_name': ';DROP TABLE Rides;',
+  'driver_vehicle': ';DROP TABLE Rides;',
 };
 
 describe('API tests', () => {
@@ -209,20 +209,20 @@ describe('API tests', () => {
   });
 
   describe('SQL injection', () => {
-    it('should return a Rides entity with a specified ID after GET request', (done) => {
+    it('should return a new Rides entity after POST request', (done) => {
       request(app)
-          .get('/rides/1')
+          .post('/rides')
+          .send(SAMPLE_INJECTION)
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => {
             expect(res.body[0]).to.have.keys(...Object.keys(SAMPLE_RESPONSE));
-            expect(res.body[0]).to.include({'rideID': 1});
           })
           .expect(200, done);
     });
 
-    it('should return an error after GET request for the Rides entity with wrong ID', (done) => {
+    it('should return an error with no Rides found', (done) => {
       request(app)
-          .get('/rides/666')
+          .get('/rides/;DROP TABLE Rides;')
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => expect(res.body).to.eql(RIDES_NOT_FOUND_ERROR))
           .expect(200, done);
