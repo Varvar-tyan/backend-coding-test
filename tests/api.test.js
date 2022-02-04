@@ -52,6 +52,15 @@ const FIELDS_TO_CHECK = {
   'driverName': 'Driver',
   'driverVehicle': 'Vehicle',
 };
+const SAMPLE_INJECTION = {
+  'start_lat': 1,
+  'start_long': 1,
+  'end_lat': 6,
+  'end_long': 6,
+  'rider_name': ';DROP TABLE Rides;',
+  'driver_name': ';DROP TABLE Rides;',
+  'driver_vehicle': ';DROP TABLE Rides;',
+};
 
 describe('API tests', () => {
   before(async () => {
@@ -195,6 +204,27 @@ describe('API tests', () => {
           .expect((res) => {
             expect(res.body.length).to.eql(50);
           })
+          .expect(200, done);
+    });
+  });
+
+  describe('SQL injection', () => {
+    it('should return a new Rides entity after POST request', (done) => {
+      request(app)
+          .post('/rides')
+          .send(SAMPLE_INJECTION)
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .expect((res) => {
+            expect(res.body[0]).to.have.keys(...Object.keys(SAMPLE_RESPONSE));
+          })
+          .expect(200, done);
+    });
+
+    it('should return an error with no Rides found', (done) => {
+      request(app)
+          .get('/rides/;DROP TABLE Rides;')
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .expect((res) => expect(res.body).to.eql(RIDES_NOT_FOUND_ERROR))
           .expect(200, done);
     });
   });
