@@ -1,0 +1,55 @@
+config:
+  target: "http://localhost:8010"
+  phases:
+    - duration: 30
+      arrivalRate: 100
+  ensure:
+    p99: 50
+
+before:
+  flow:
+    - log: "Adding Rides to the database"
+    - loop:
+        - post:
+            url: "/rides"
+            json:
+              start_lat: "33"
+              start_long: "33"
+              end_lat: "66"
+              end_long: "66"
+              rider_name: "Rider"
+              driver_name: "Driver"
+              driver_vehicle: "Vehicle"
+      count: 100
+
+scenarios:
+  - name: "Check health"
+    flow:
+      - get:
+          url: "/health"
+
+  - name: "POST Rides"
+    weight: 3
+    flow:
+      - post:
+          url: "/rides"
+          json:
+            start_lat: "33"
+            start_long: "33"
+            end_lat: "66"
+            end_long: "66"
+            rider_name: "Rider"
+            driver_name: "Driver"
+            driver_vehicle: "Vehicle"
+
+  - name: "GET Rides"
+    weight: 3
+    flow:
+      - get:
+          url: "/rides"
+
+  - name: "GET Rides by ID"
+    weight: 3
+    flow:
+      - get:
+          url: "/rides/{{$randomNumber(1,100)}}"

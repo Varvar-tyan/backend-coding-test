@@ -9,7 +9,8 @@
   "scripts": {
     "test": "mocha tests",
     "start": "node index.js",
-    "coverage": "nyc npm run test"
+    "coverage": "nyc npm run test",
+    "test:load": "forever start index.js && sleep 2s && artillery run ./tests/load-test.yml && forever stop index.js"
   },
   "pre-push": [
     "test",
@@ -29,9 +30,11 @@
     "winston": "^3.5.1"
   },
   "devDependencies": {
+    "artillery": "^1.6.1",
     "chai": "^4.3.6",
     "eslint": "^8.8.0",
     "eslint-config-google": "^0.14.0",
+    "forever": "^4.0.3",
     "mocha": "^6.1.4",
     "nyc": "^15.1.0",
     "pre-push": "^0.1.1",

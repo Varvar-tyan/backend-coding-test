@@ -1,3 +1,5 @@
+'use strict';
+
 const database = require('../database/database');
 
 const findAllRides = async (offset, limit) => {
