@@ -52,6 +52,15 @@ const FIELDS_TO_CHECK = {
   'driverName': 'Driver',
   'driverVehicle': 'Vehicle',
 };
+const SAMPLE_INJECTION = {
+  'start_lat': 1,
+  'start_long': 1,
+  'end_lat': 6,
+  'end_long': 6,
+  'rider_name': 'Rider',
+  'driver_name': 'Driver',
+  'driver_vehicle': 'Vehicle',
+};
 
 describe('API tests', () => {
   before(async () => {
@@ -195,6 +204,27 @@ describe('API tests', () => {
           .expect((res) => {
             expect(res.body.length).to.eql(50);
           })
+          .expect(200, done);
+    });
+  });
+
+  describe('SQL injection', () => {
+    it('should return a Rides entity with a specified ID after GET request', (done) => {
+      request(app)
+          .get('/rides/1')
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .expect((res) => {
+            expect(res.body[0]).to.have.keys(...Object.keys(SAMPLE_RESPONSE));
+            expect(res.body[0]).to.include({'rideID': 1});
+          })
+          .expect(200, done);
+    });
+
+    it('should return an error after GET request for the Rides entity with wrong ID', (done) => {
+      request(app)
+          .get('/rides/666')
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .expect((res) => expect(res.body).to.eql(RIDES_NOT_FOUND_ERROR))
           .expect(200, done);
     });
   });

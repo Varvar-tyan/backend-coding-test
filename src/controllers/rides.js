@@ -1,6 +1,7 @@
 const logger = require('../utils/logger');
 const service = require('../services/rides');
 const rideSchema = require('../validation/rides');
+const rideModel = require('../models/rides');
 
 const DEFAULT_OFFSET = 0;
 const DEFAULT_LIMIT = 50;
@@ -50,15 +51,7 @@ const findRideByID = async (req, res) => {
 
 const createRide = async (req, res) => {
   try {
-    const errors = rideSchema.validate({
-      start_lat: Number(req.body.start_lat),
-      start_long: Number(req.body.start_long),
-      end_lat: Number(req.body.end_lat),
-      end_long: Number(req.body.end_long),
-      rider_name: req.body.rider_name,
-      driver_name: req.body.driver_name,
-      driver_vehicle: req.body.driver_vehicle,
-    });
+    const errors = rideSchema.validate(rideModel(req.body));
 
     if (errors.length) {
       return res.send({
@@ -67,15 +60,7 @@ const createRide = async (req, res) => {
       });
     }
 
-    const values = [
-      req.body.start_lat,
-      req.body.start_long,
-      req.body.end_lat,
-      req.body.end_long,
-      req.body.rider_name,
-      req.body.driver_name,
-      req.body.driver_vehicle,
-    ];
+    const values = Object.values(rideModel(req.body));
 
     const result = await service.createRide(values);
     const rows = await service.findRideByID(result.lastID);
