@@ -1,9 +1,8 @@
-import {Database} from 'sqlite';
-import {open} from 'sqlite';
+import {Database, open} from 'sqlite';
 import sqlite3 from 'sqlite3';
 import buildSchemas from './schemas';
 
-class DB {
+class DBConnection {
   db: Database;
   async init() {
     this.db = await open({
@@ -14,4 +13,4 @@ class DB {
   }
 }
 
-export default new DB();
+export default new DBConnection();

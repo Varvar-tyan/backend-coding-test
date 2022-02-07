@@ -11,7 +11,9 @@
     "test": "mocha -r ts-node/register 'tests/**/*.ts'",
     "start": "tsc && node dist/index.js",
     "coverage": "nyc npm run test",
-    "test:load": "forever start index.ts && sleep 2s && artillery run ./tests/load-test.yml && forever stop index.ts"
+    "test:load": "forever start index.ts && sleep 2s && artillery run ./tests/load-test.yml && forever stop index.ts",
+    "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix"
   },
   "pre-push": [
     "test",
