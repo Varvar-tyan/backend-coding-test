@@ -1,13 +1,10 @@
-'use strict';
-
-export {};
-const express = require('express');
-const bodyParser = require('body-parser');
-const healthRouter = require('./routes/health');
-const ridesRouter = require('./routes/rides');
-const serverErrorHandler = require('./utils/server-error-handler');
-const swaggerUI = require('swagger-ui-express');
-const swaggerConfig = require('./documentation/swagger/swagger-config');
+import express from 'express';
+import bodyParser from 'body-parser';
+import healthRouter from './routes/health';
+import ridesRouter from './routes/rides';
+import serverErrorHandler from './utils/server-error-handler';
+import swaggerUI from 'swagger-ui-express';
+import swaggerConfig from './documentation/swagger/swagger-config';
 
 const jsonParser = bodyParser.json();
 
@@ -19,4 +16,4 @@ app.use(healthRouter);
 app.use(ridesRouter);
 app.use(serverErrorHandler);
 
-module.exports = app;
+export default app;

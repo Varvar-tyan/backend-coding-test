@@ -1,7 +1,4 @@
-'use strict';
-
-export {};
-const express = require('express');
+import express from 'express';
 
 // eslint-disable-next-line new-cap
 const healthRouter = express.Router();
@@ -9,4 +6,4 @@ const healthRouter = express.Router();
 healthRouter.route('/health')
     .get((req, res) => res.send('Healthy'));
 
-module.exports = healthRouter;
+export default healthRouter;

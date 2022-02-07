@@ -1,9 +1,6 @@
-'use strict';
-
-export {};
-const logger = require('./logger');
-const {SERVER_ERROR} = require('./consts/error-codes');
-const {UNKNOWN_ERROR} = require('./consts/error-messages');
+import logger from './logger';
+import {SERVER_ERROR} from './consts/error-codes';
+import {UNKNOWN_ERROR} from './consts/error-messages';
 
 const serverErrorHandler = (err, req, res, next) => {
   logger.error(err);
@@ -13,4 +10,4 @@ const serverErrorHandler = (err, req, res, next) => {
   });
 };
 
-module.exports = serverErrorHandler;
+export default serverErrorHandler;

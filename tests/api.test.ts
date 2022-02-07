@@ -1,11 +1,7 @@
-'use strict';
-
-export {};
-const request = require('supertest');
-const expect = require('chai').expect;
-
-const database = require('../src/database/database');
-const app = require('../src/app');
+import request from 'supertest';
+import {expect} from 'chai';
+import database from '../src/database/database';
+import app from '../src/app';
 
 const RIDES_NOT_FOUND_ERROR = {
   error_code: 'RIDES_NOT_FOUND_ERROR',

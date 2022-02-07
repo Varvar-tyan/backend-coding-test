@@ -1,12 +1,10 @@
-'use strict';
+import {Database} from 'sqlite';
+import {open} from 'sqlite';
+import sqlite3 from 'sqlite3';
+import buildSchemas from './schemas';
 
-export {};
-const {open} = require('sqlite');
-const sqlite3 = require('sqlite3');
-const buildSchemas = require('./schemas');
-
-class Database {
-  db: any;
+class DB {
+  db: Database;
   async init() {
     this.db = await open({
       filename: ':memory:',
@@ -16,4 +14,4 @@ class Database {
   }
 }
 
-module.exports = new Database();
+export default new DB();

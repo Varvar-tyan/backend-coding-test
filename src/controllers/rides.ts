@@ -1,15 +1,12 @@
-'use strict';
+import * as service from '../services/rides';
+import rideSchema from '../validation/rides';
+import rideModel from '../models/rides';
+import {DEFAULT_OFFSET, DEFAULT_LIMIT} from '../utils/consts/pagination';
+import {RIDES_NOT_FOUND_ERROR, VALIDATION_ERROR} from '../utils/consts/error-codes';
+import {NO_RIDES_MESSAGE} from '../utils/consts/error-messages';
+import {ValidationError} from 'validate';
 
-export {};
-const service = require('../services/rides');
-const rideSchema = require('../validation/rides');
-const rideModel = require('../models/rides');
-const {DEFAULT_OFFSET, DEFAULT_LIMIT} = require('../utils/consts/pagination');
-const {RIDES_NOT_FOUND_ERROR, VALIDATION_ERROR} = require('../utils/consts/error-codes');
-const {NO_RIDES_MESSAGE} = require('../utils/consts/error-messages');
-
-
-const findAllRides = async (req, res, next) => {
+export const findAllRides = async (req, res, next) => {
   try {
     const offset = req.query.offset || DEFAULT_OFFSET;
     const limit = req.query.limit || DEFAULT_LIMIT;
@@ -28,7 +25,7 @@ const findAllRides = async (req, res, next) => {
   }
 };
 
-const findRideByID = async (req, res, next) => {
+export const findRideByID = async (req, res, next) => {
   try {
     const rows = await service.findRideByID(req.params.id);
     if (rows.length === 0) {
@@ -44,9 +41,13 @@ const findRideByID = async (req, res, next) => {
   }
 };
 
-const createRide = async (req, res, next) => {
+interface Error extends ValidationError {
+  message?: string
+}
+
+export const createRide = async (req, res, next) => {
   try {
-    const errors = rideSchema.validate(rideModel(req.body));
+    const errors: Error[] = rideSchema.validate(rideModel(req.body));
 
     if (errors.length) {
       return res.send({
@@ -65,5 +66,3 @@ const createRide = async (req, res, next) => {
     next(err);
   }
 };
-
-module.exports = {findAllRides, findRideByID, createRide};

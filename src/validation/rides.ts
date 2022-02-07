@@ -1,6 +1,5 @@
-export {};
-const Schema = require('validate');
-const {START_COORDINATES_ERROR, END_COORDINATES_ERROR, RIDER_ERROR} = require('../utils/consts/error-messages');
+import Schema from 'validate';
+import {START_COORDINATES_ERROR, END_COORDINATES_ERROR, RIDER_ERROR} from '../utils/consts/error-messages';
 
 const rideSchema = new Schema({
   start_lat: {
@@ -65,4 +64,4 @@ const rideSchema = new Schema({
   },
 });
 
-module.exports = rideSchema;
+export default rideSchema;

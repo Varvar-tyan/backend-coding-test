@@ -1,5 +1,3 @@
-'use strict';
-
 const rideModel = (rideDTO) => ({
   start_lat: Number(rideDTO.start_lat),
   start_long: Number(rideDTO.start_long),
@@ -10,4 +8,4 @@ const rideModel = (rideDTO) => ({
   driver_vehicle: rideDTO.driver_vehicle,
 });
 
-module.exports = rideModel;
+export default rideModel;

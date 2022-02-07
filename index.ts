@@ -1,13 +1,11 @@
-'use strict';
+import 'dotenv/config';
+import app from './src/app';
 
-require('dotenv').config();
+import database from './src/database/database';
+import logger from './src/utils/logger';
+import * as sqlite3 from 'sqlite3';
 
 const port = process.env.PORT;
-const app = require('./src/app');
-
-const database = require('./src/database/database');
-const logger = require('./src/utils/logger');
-const sqlite3 = require('sqlite3');
 
 const main = async () => {
   try {
