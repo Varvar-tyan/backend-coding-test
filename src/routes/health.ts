@@ -1,9 +1,9 @@
 import express from 'express';
 
-// eslint-disable-next-line new-cap
-const healthRouter = express.Router();
+export const healthRouter = express.Router();
 
-healthRouter.route('/health')
+export const healthPath = '/health';
+
+healthRouter.route(healthPath)
     .get((req, res) => res.send('Healthy'));
 
-export default healthRouter;

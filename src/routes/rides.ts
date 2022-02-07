@@ -1,14 +1,14 @@
 import express from 'express';
 import {findAllRides, findRideByID, createRide} from '../controllers/rides';
 
-// eslint-disable-next-line new-cap
-const ridesRouter = express.Router();
+export const ridesRouter = express.Router();
 
-ridesRouter.route('/rides')
+export const ridesPath = '/rides';
+export const ridePath = '/rides/:id';
+
+ridesRouter.route(ridesPath)
     .get(findAllRides)
     .post(createRide);
 
-ridesRouter.route('/rides/:id')
+ridesRouter.route(ridePath)
     .get(findRideByID);
-
-export default ridesRouter;

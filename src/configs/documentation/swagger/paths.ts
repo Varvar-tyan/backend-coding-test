@@ -1,3 +1,35 @@
+import HttpStatusCodes from '../../../utils/consts/http-statuses-codes';
+
+const serverErrorResponse = {
+  [HttpStatusCodes.INTERNAL_SERVER_ERROR]: {
+    description: 'Internal Server Error',
+    content: {
+      'application/json': {
+        schema: {
+          items: {
+            $ref: '#/components/schemas/ServerError',
+          },
+        },
+      },
+    },
+  },
+};
+
+const notFoundResponse = {
+  [HttpStatusCodes.NOT_FOUND]: {
+    description: 'Not Found Error',
+    content: {
+      'application/json': {
+        schema: {
+          items: {
+            $ref: '#/components/schemas/NotFoundError',
+          },
+        },
+      },
+    },
+  },
+};
+
 const paths = {
   '/health': {
     get: {
@@ -6,9 +38,10 @@ const paths = {
       description: `Check whether the server is running.`,
       operationId: 'health-check',
       responses: {
-        200: {
+        [HttpStatusCodes.OK]: {
           description: 'Healthy',
         },
+        ...serverErrorResponse,
       },
     },
   },
@@ -38,8 +71,8 @@ const paths = {
         },
       ],
       responses: {
-        200: {
-          description: 'Array of Rides entities.',
+        [HttpStatusCodes.OK]: {
+          description: 'Array of Ride entities.',
           content: {
             'application/json': {
               schema: {
@@ -51,6 +84,8 @@ const paths = {
             },
           },
         },
+        ...notFoundResponse,
+        ...serverErrorResponse,
       },
     },
     post: {
@@ -70,12 +105,11 @@ const paths = {
         },
       },
       responses: {
-        200: {
+        [HttpStatusCodes.CREATED]: {
           description: 'Array with a new Rides entity.',
           content: {
             'application/json': {
               schema: {
-                type: 'array',
                 items: {
                   $ref: '#/components/schemas/RidesResponse',
                 },
@@ -83,6 +117,19 @@ const paths = {
             },
           },
         },
+        [HttpStatusCodes.BAD_REQUEST]: {
+          description: 'Validation Error',
+          content: {
+            'application/json': {
+              schema: {
+                items: {
+                  $ref: '#/components/schemas/ValidationError',
+                },
+              },
+            },
+          },
+        },
+        ...serverErrorResponse,
       },
     },
   },
@@ -90,25 +137,24 @@ const paths = {
   '/rides/{id}': {
     get: {
       tags: ['Rides'],
-      summary: 'Retrieve a Rides entity',
-      description: `Retrieve one of the Rides entities with a specified id.`,
+      summary: 'Retrieve a Ride entity',
+      description: `Retrieve one of the Ride entities with a specified id.`,
       operationId: 'ride-get',
       parameters: [
         {
           id: 'id',
           in: 'path',
           name: 'id',
-          description: 'ID of a Rides entity',
+          description: 'ID of a Ride entity',
           required: true,
         },
       ],
       responses: {
-        200: {
-          description: 'Array with a Rides entity with a specified id.',
+        [HttpStatusCodes.OK]: {
+          description: 'A Ride entity with a specified id.',
           content: {
             'application/json': {
               schema: {
-                type: 'array',
                 items: {
                   $ref: '#/components/schemas/RidesResponse',
                 },
@@ -116,6 +162,8 @@ const paths = {
             },
           },
         },
+        ...notFoundResponse,
+        ...serverErrorResponse,
       },
     },
   },

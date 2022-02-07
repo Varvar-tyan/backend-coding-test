@@ -1,16 +1,8 @@
-import {Express} from 'express';
 import logger from './logger';
 import {SERVER_ERROR} from './consts/error-codes';
 import {UNKNOWN_ERROR} from './consts/error-messages';
+import {ErrorHandler} from '../types/utils-types';
 import HttpStatusCodes from './consts/http-statuses-codes';
-
-// todo types
-type ErrorHandler = (
-  err: Express.Error,
-  req: Express.Request,
-  res: Express.Response,
-  next: Express.NextFunction,
-) => void
 
 // express needs a function to have this amount of parameters to identify it as an error handler
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

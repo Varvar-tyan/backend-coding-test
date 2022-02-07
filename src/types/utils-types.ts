@@ -10,3 +10,10 @@ export type ControllerFunction = (
   res: Express.Response,
   next: Express.NextFunction,
 ) => Promise<void>
+
+export type ErrorHandler = (
+  err: Express.Error,
+  req: Express.Request,
+  res: Express.Response,
+  next: Express.NextFunction,
+) => void

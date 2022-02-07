@@ -5,7 +5,7 @@ import {DEFAULT_OFFSET, DEFAULT_LIMIT} from '../utils/consts/pagination';
 import {RIDES_NOT_FOUND_ERROR, VALIDATION_ERROR} from '../utils/consts/error-codes';
 import {NO_RIDES_MESSAGE} from '../utils/consts/error-messages';
 import HttpStatusCodes from '../utils/consts/http-statuses-codes';
-import {ControllerFunction, ValidateError} from '../types/rides-controllers';
+import {ControllerFunction, ValidateError} from '../types/utils-types';
 
 export const findAllRides: ControllerFunction = async (req, res, next) => {
   try {
@@ -20,7 +20,7 @@ export const findAllRides: ControllerFunction = async (req, res, next) => {
       });
     }
 
-    res.send(rides);
+    res.status(HttpStatusCodes.OK).send(rides);
   } catch (err) {
     next(err);
   }
@@ -36,7 +36,7 @@ export const findRideByID: ControllerFunction = async (req, res, next) => {
       });
     }
 
-    res.send(ride);
+    res.status(HttpStatusCodes.OK).send(ride);
   } catch (err) {
     next(err);
   }
@@ -56,7 +56,7 @@ export const createRide: ControllerFunction = async (req, res, next) => {
     const result = await service.createRide(req.body);
     const rows = await service.findRideByID(result);
 
-    res.send(rows);
+    res.status(HttpStatusCodes.CREATED).send(rows);
   } catch (err) {
     next(err);
   }
