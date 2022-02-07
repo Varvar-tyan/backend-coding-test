@@ -4,6 +4,7 @@
   "branches": 80,
   "lines": 80,
   "statements": 80,
+  "extension": [".js",".ts"],
   "exclude": [
     "index.js", "tests/"
   ]

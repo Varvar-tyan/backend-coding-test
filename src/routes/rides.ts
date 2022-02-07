@@ -1,5 +1,6 @@
 'use strict';
 
+export {};
 const express = require('express');
 const {findAllRides, findRideByID, createRide} = require('../controllers/rides');
 

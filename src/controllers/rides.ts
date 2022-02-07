@@ -1,5 +1,6 @@
 'use strict';
 
+export {};
 const service = require('../services/rides');
 const rideSchema = require('../validation/rides');
 const rideModel = require('../models/rides');

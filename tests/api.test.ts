@@ -1,5 +1,6 @@
 'use strict';
 
+export {};
 const request = require('supertest');
 const expect = require('chai').expect;
 

@@ -1,5 +1,6 @@
 'use strict';
 
+export {};
 const logger = require('./logger');
 const {SERVER_ERROR} = require('./consts/error-codes');
 const {UNKNOWN_ERROR} = require('./consts/error-messages');

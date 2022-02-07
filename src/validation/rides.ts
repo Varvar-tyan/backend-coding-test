@@ -1,3 +1,4 @@
+export {};
 const Schema = require('validate');
 const {START_COORDINATES_ERROR, END_COORDINATES_ERROR, RIDER_ERROR} = require('../utils/consts/error-messages');
 

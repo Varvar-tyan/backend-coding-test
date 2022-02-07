@@ -1,3 +1,4 @@
+export {};
 const paths = require('./paths');
 const components = require('./schemas');
 const HOST = process.env.HOST;
