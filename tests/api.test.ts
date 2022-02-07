@@ -1,5 +1,6 @@
 import request from 'supertest';
 import {expect} from 'chai';
+
 import database from '../src/database/database';
 import app from '../src/app';
 

@@ -1,4 +1,6 @@
-const buildSchemas = async (db) => {
+import {Database} from 'sqlite';
+
+const buildSchemas = async (db: Database): Promise<void> => {
   const createRideTableSchema = `
         CREATE TABLE Rides
         (
@@ -15,7 +17,6 @@ const buildSchemas = async (db) => {
     `;
 
   await db.run(createRideTableSchema);
-  return db;
 };
 
 export default buildSchemas;

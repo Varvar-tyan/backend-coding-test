@@ -1,3 +1,4 @@
+import {Express} from 'express';
 import * as service from '../services/rides';
 import rideSchema from '../validation/rides';
 import rideModel from '../models/rides';
@@ -6,7 +7,17 @@ import {RIDES_NOT_FOUND_ERROR, VALIDATION_ERROR} from '../utils/consts/error-cod
 import {NO_RIDES_MESSAGE} from '../utils/consts/error-messages';
 import {ValidationError} from 'validate';
 
-export const findAllRides = async (req, res, next) => {
+interface Error extends ValidationError {
+  message?: string
+}
+
+type ControllerFunction = (
+  req: Express.Request,
+  res: Express.Response,
+  next: Express.NextFunction,
+) => Promise<void>
+
+export const findAllRides: ControllerFunction = async (req, res, next) => {
   try {
     const offset = req.query.offset || DEFAULT_OFFSET;
     const limit = req.query.limit || DEFAULT_LIMIT;
@@ -25,7 +36,7 @@ export const findAllRides = async (req, res, next) => {
   }
 };
 
-export const findRideByID = async (req, res, next) => {
+export const findRideByID: ControllerFunction = async (req, res, next) => {
   try {
     const rows = await service.findRideByID(req.params.id);
     if (rows.length === 0) {
@@ -41,11 +52,7 @@ export const findRideByID = async (req, res, next) => {
   }
 };
 
-interface Error extends ValidationError {
-  message?: string
-}
-
-export const createRide = async (req, res, next) => {
+export const createRide: ControllerFunction = async (req, res, next) => {
   try {
     const errors: Error[] = rideSchema.validate(rideModel(req.body));
 
