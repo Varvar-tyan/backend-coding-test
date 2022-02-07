@@ -6,6 +6,7 @@ import {DEFAULT_OFFSET, DEFAULT_LIMIT} from '../utils/consts/pagination';
 import {RIDES_NOT_FOUND_ERROR, VALIDATION_ERROR} from '../utils/consts/error-codes';
 import {NO_RIDES_MESSAGE} from '../utils/consts/error-messages';
 import {ValidationError} from 'validate';
+import {BAD_REQUEST, NOT_FOUND} from '../utils/consts/error-statuses';
 
 interface Error extends ValidationError {
   message?: string
@@ -24,7 +25,7 @@ export const findAllRides: ControllerFunction = async (req, res, next) => {
 
     const rows = await service.findAllRides(offset, limit);
     if (rows.length === 0) {
-      return res.send({
+      return res.status(NOT_FOUND).send({
         error_code: RIDES_NOT_FOUND_ERROR,
         message: NO_RIDES_MESSAGE,
       });
@@ -40,7 +41,7 @@ export const findRideByID: ControllerFunction = async (req, res, next) => {
   try {
     const rows = await service.findRideByID(req.params.id);
     if (rows.length === 0) {
-      return res.send({
+      return res.status(NOT_FOUND).send({
         error_code: RIDES_NOT_FOUND_ERROR,
         message: NO_RIDES_MESSAGE,
       });
@@ -57,7 +58,7 @@ export const createRide: ControllerFunction = async (req, res, next) => {
     const errors: Error[] = rideSchema.validate(rideModel(req.body));
 
     if (errors.length) {
-      return res.send({
+      return res.status(BAD_REQUEST).send({
         error_code: VALIDATION_ERROR,
         message: errors[0].message,
       });
