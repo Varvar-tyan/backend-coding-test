@@ -1,9 +1,8 @@
 import 'dotenv/config';
 import app from './src/app';
-
-import database from './src/database/database';
 import logger from './src/utils/logger';
 import * as sqlite3 from 'sqlite3';
+import database from './src/configs/database';
 
 const port = process.env.PORT;
 

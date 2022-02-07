@@ -1,77 +1,20 @@
 import request from 'supertest';
 import {expect} from 'chai';
 
-import database from '../src/database/database';
+import database from '../src/configs/database';
 import app from '../src/app';
-
-const RIDES_NOT_FOUND_ERROR = {
-  error_code: 'RIDES_NOT_FOUND_ERROR',
-  message: 'Could not find any rides',
-};
-const START_COORDINATES_ERROR = {
-  error_code: 'VALIDATION_ERROR',
-  message: 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
-};
-const END_COORDINATES_ERROR = {
-  error_code: 'VALIDATION_ERROR',
-  message: 'End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
-};
-const RIDER_ERROR = {
-  error_code: 'VALIDATION_ERROR',
-  message: 'Rider name must be a non empty string',
-};
-
-const SAMPLE_REQUEST_BODY = {
-  'start_lat': 1,
-  'start_long': 1,
-  'end_lat': 6,
-  'end_long': 6,
-  'rider_name': 'Rider',
-  'driver_name': 'Driver',
-  'driver_vehicle': 'Vehicle',
-};
-const SAMPLE_RESPONSE = {
-  'rideID': 1,
-  'startLat': 1,
-  'startLong': 1,
-  'endLat': 6,
-  'endLong': 6,
-  'riderName': 'Rider',
-  'driverName': 'Driver',
-  'driverVehicle': 'Vehicle',
-  'created': '2007-04-30 13:10:02',
-};
-const FIELDS_TO_CHECK = {
-  'startLat': 1,
-  'startLong': 1,
-  'endLat': 6,
-  'endLong': 6,
-  'riderName': 'Rider',
-  'driverName': 'Driver',
-  'driverVehicle': 'Vehicle',
-};
-const SAMPLE_INJECTION = {
-  'start_lat': 1,
-  'start_long': 1,
-  'end_lat': 6,
-  'end_long': 6,
-  'rider_name': ';DROP TABLE Rides;',
-  'driver_name': ';DROP TABLE Rides;',
-  'driver_vehicle': ';DROP TABLE Rides;',
-};
+import {
+  END_COORDINATES_ERROR,
+  FIELDS_TO_CHECK, RIDER_ERROR,
+  RIDES_NOT_FOUND_ERROR, SAMPLE_INJECTION,
+  SAMPLE_REQUEST_BODY,
+  SAMPLE_RESPONSE,
+  START_COORDINATES_ERROR,
+} from './mocks/instances';
 
 describe('API tests', () => {
   before(async () => {
     await database.init();
-  });
-
-  describe('/health', () => {
-    it('should return health after GET request', (done) => {
-      request(app)
-          .get('/health')
-          .expect('Content-Type', /text/)
-          .expect(200, done);
-    });
   });
 
   describe('/rides', () => {
@@ -89,8 +32,8 @@ describe('API tests', () => {
           .send(SAMPLE_REQUEST_BODY)
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => {
-            expect(res.body[0]).to.have.keys(...Object.keys(SAMPLE_RESPONSE));
-            expect(res.body[0]).to.include(FIELDS_TO_CHECK);
+            expect(res.body).to.have.keys(...Object.keys(SAMPLE_RESPONSE));
+            expect(res.body).to.include(FIELDS_TO_CHECK);
           })
           .expect(200, done);
     });
@@ -110,8 +53,8 @@ describe('API tests', () => {
           .get('/rides/1')
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => {
-            expect(res.body[0]).to.have.keys(...Object.keys(SAMPLE_RESPONSE));
-            expect(res.body[0]).to.include({'rideID': 1});
+            expect(res.body).to.have.keys(...Object.keys(SAMPLE_RESPONSE));
+            expect(res.body).to.include({'rideID': 1});
           })
           .expect(200, done);
     });
@@ -175,10 +118,10 @@ describe('API tests', () => {
   describe('/rides GET pagination', () => {
     before( (done) => {
       // adds more Rides to the database
-      const postRide = (agent, i = 50) => {
-        agent.post('/rides').send(SAMPLE_REQUEST_BODY).end(() => {
-          i--;
-          i > 0 ? postRide(agent, i) : done();
+      const postRide = (request, ridesIndex = 50) => {
+        request.post('/rides').send(SAMPLE_REQUEST_BODY).end(() => {
+          ridesIndex--;
+          ridesIndex ? postRide(request, ridesIndex) : done();
         });
       };
       postRide(request(app));
@@ -213,7 +156,7 @@ describe('API tests', () => {
           .send(SAMPLE_INJECTION)
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => {
-            expect(res.body[0]).to.have.keys(...Object.keys(SAMPLE_RESPONSE));
+            expect(res.body).to.have.keys(...Object.keys(SAMPLE_RESPONSE));
           })
           .expect(200, done);
     });
@@ -224,6 +167,16 @@ describe('API tests', () => {
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => expect(res.body).to.eql(RIDES_NOT_FOUND_ERROR))
           .expect(404, done);
+    });
+  });
+
+
+  describe('/health', () => {
+    it('should return health after GET request', (done) => {
+      request(app)
+          .get('/health')
+          .expect('Content-Type', /text/)
+          .expect(200, done);
     });
   });
 });

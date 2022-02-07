@@ -1,5 +1,4 @@
-import {Database} from 'sqlite';
-import {open} from 'sqlite';
+import {Database, open} from 'sqlite';
 import sqlite3 from 'sqlite3';
 import buildSchemas from './schemas';
 

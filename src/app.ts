@@ -4,7 +4,7 @@ import healthRouter from './routes/health';
 import ridesRouter from './routes/rides';
 import serverErrorHandler from './utils/server-error-handler';
 import swaggerUI from 'swagger-ui-express';
-import swaggerConfig from './documentation/swagger/swagger-config';
+import swaggerConfig from './configs/documentation/swagger/swagger-config';
 
 const jsonParser = bodyParser.json();
 
