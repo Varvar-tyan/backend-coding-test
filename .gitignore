@@ -8,6 +8,9 @@ yarn-error.log*
 # IDE settings
 .idea/
 
+# Distribution
+dist/
+
 # Runtime data
 pids
 *.pid

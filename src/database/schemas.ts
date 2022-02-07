@@ -1,6 +1,6 @@
-'use strict';
+import {Database} from 'sqlite';
 
-module.exports = async (db) => {
+const buildSchemas = async (db: Database): Promise<void> => {
   const createRideTableSchema = `
         CREATE TABLE Rides
         (
@@ -17,5 +17,6 @@ module.exports = async (db) => {
     `;
 
   await db.run(createRideTableSchema);
-  return db;
 };
+
+export default buildSchemas;

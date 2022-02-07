@@ -1,6 +1,6 @@
-'use strict';
+import {RidesRequestModel} from '../types/rides';
 
-const rideModel = (rideDTO) => ({
+const rideModel = (rideDTO: RidesRequestModel): RidesRequestModel => ({
   start_lat: Number(rideDTO.start_lat),
   start_long: Number(rideDTO.start_long),
   end_lat: Number(rideDTO.end_lat),
@@ -10,4 +10,4 @@ const rideModel = (rideDTO) => ({
   driver_vehicle: rideDTO.driver_vehicle,
 });
 
-module.exports = rideModel;
+export default rideModel;

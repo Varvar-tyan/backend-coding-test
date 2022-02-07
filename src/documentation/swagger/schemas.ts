@@ -119,4 +119,4 @@ const components = {
   },
 };
 
-module.exports = components;
+export default components;

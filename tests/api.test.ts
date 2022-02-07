@@ -1,10 +1,8 @@
-'use strict';
+import request from 'supertest';
+import {expect} from 'chai';
 
-const request = require('supertest');
-const expect = require('chai').expect;
-
-const database = require('../src/database/database');
-const app = require('../src/app');
+import database from '../src/database/database';
+import app from '../src/app';
 
 const RIDES_NOT_FOUND_ERROR = {
   error_code: 'RIDES_NOT_FOUND_ERROR',
@@ -82,7 +80,7 @@ describe('API tests', () => {
           .get('/rides')
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => expect(res.body).to.eql(RIDES_NOT_FOUND_ERROR))
-          .expect(200, done);
+          .expect(404, done);
     });
 
     it('should return a new Rides entity after POST request', (done) => {
@@ -123,7 +121,7 @@ describe('API tests', () => {
           .get('/rides/666')
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => expect(res.body).to.eql(RIDES_NOT_FOUND_ERROR))
-          .expect(200, done);
+          .expect(404, done);
     });
   });
 
@@ -134,7 +132,7 @@ describe('API tests', () => {
           .send({...SAMPLE_REQUEST_BODY, start_lat: 100})
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => expect(res.body).to.eql(START_COORDINATES_ERROR))
-          .expect(200, done);
+          .expect(400, done);
     });
 
     it('should return an error if wrong end coordinates are provided', (done) => {
@@ -143,7 +141,7 @@ describe('API tests', () => {
           .send({...SAMPLE_REQUEST_BODY, end_lat: 100})
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => expect(res.body).to.eql(END_COORDINATES_ERROR))
-          .expect(200, done);
+          .expect(400, done);
     });
 
     it('should return an error if no rider name is provided', (done) => {
@@ -152,7 +150,7 @@ describe('API tests', () => {
           .send({...SAMPLE_REQUEST_BODY, rider_name: ''})
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => expect(res.body).to.eql(RIDER_ERROR))
-          .expect(200, done);
+          .expect(400, done);
     });
 
     it('should return an error if no driver name is provided', (done) => {
@@ -161,7 +159,7 @@ describe('API tests', () => {
           .send({...SAMPLE_REQUEST_BODY, driver_name: ''})
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => expect(res.body).to.eql(RIDER_ERROR))
-          .expect(200, done);
+          .expect(400, done);
     });
 
     it('should return an error if no driver vehicle is provided', (done) => {
@@ -170,7 +168,7 @@ describe('API tests', () => {
           .send({...SAMPLE_REQUEST_BODY, driver_vehicle: ''})
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => expect(res.body).to.eql(RIDER_ERROR))
-          .expect(200, done);
+          .expect(400, done);
     });
   });
 
@@ -225,7 +223,7 @@ describe('API tests', () => {
           .get('/rides/;DROP TABLE Rides;')
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => expect(res.body).to.eql(RIDES_NOT_FOUND_ERROR))
-          .expect(200, done);
+          .expect(404, done);
     });
   });
 });
