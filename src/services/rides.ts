@@ -1,6 +1,6 @@
 import database from '../configs/database';
-import {RidesRequestModel, RidesResponseModel} from '../types/rides-interfaces';
 import rideModel from '../models/rides';
+import {RidesRequestModel, RidesResponseModel} from '../utils/rides-interfaces';
 
 export const findAllRides = async (offset: number, limit: number): Promise<RidesResponseModel[]> => {
   return await database.db.all('SELECT * FROM Rides ORDER BY rideID LIMIT ? OFFSET ?', limit, offset);

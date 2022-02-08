@@ -1,5 +1,5 @@
 import Schema from 'validate';
-import {START_COORDINATES_ERROR, END_COORDINATES_ERROR, RIDER_ERROR} from '../utils/consts/error-messages';
+import {END_COORDINATES_ERROR, RIDER_ERROR, START_COORDINATES_ERROR} from '../consts/error-messages';
 
 const MIN_LATITUDE = -90;
 const MAX_LATITUDE = 90;

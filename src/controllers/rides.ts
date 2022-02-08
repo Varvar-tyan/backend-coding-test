@@ -1,11 +1,11 @@
 import * as service from '../services/rides';
-import rideSchema from '../validation/rides';
 import rideModel from '../models/rides';
 import {DEFAULT_OFFSET, DEFAULT_LIMIT} from '../utils/consts/pagination';
-import {RIDES_NOT_FOUND_ERROR, VALIDATION_ERROR} from '../utils/consts/error-codes';
+import {RIDES_NOT_FOUND_ERROR, VALIDATION_ERROR} from '../utils/consts/error-names';
 import {NO_RIDES_MESSAGE} from '../utils/consts/error-messages';
 import HttpStatusCodes from '../utils/consts/http-statuses-codes';
-import {ControllerFunction, ValidateError} from '../types/utils-types';
+import rideSchema from '../utils/validation/rides';
+import {ControllerFunction, ValidateError} from '../utils/utils-types';
 
 export const findAllRides: ControllerFunction = async (req, res, next) => {
   try {

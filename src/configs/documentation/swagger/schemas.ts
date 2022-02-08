@@ -1,4 +1,4 @@
-import {SERVER_ERROR, RIDES_NOT_FOUND_ERROR, VALIDATION_ERROR} from '../../../utils/consts/error-codes';
+import {SERVER_ERROR, RIDES_NOT_FOUND_ERROR, VALIDATION_ERROR} from '../../../utils/consts/error-names';
 import {NO_RIDES_MESSAGE, START_COORDINATES_ERROR, UNKNOWN_ERROR} from '../../../utils/consts/error-messages';
 
 const components = {
