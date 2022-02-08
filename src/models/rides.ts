@@ -1,4 +1,4 @@
-import {RidesRequestModel} from '../types/rides-interfaces';
+import {RidesRequestModel} from '../utils/rides-interfaces';
 
 const rideModel = (ride: RidesRequestModel): RidesRequestModel => ({
   start_lat: Number(ride.start_lat),

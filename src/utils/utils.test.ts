@@ -1,74 +1,19 @@
 import request from 'supertest';
 import {expect} from 'chai';
-
-import database from '../src/configs/database';
-import app from '../src/app';
+import database from '../configs/database';
+import app from '../app';
+import {ridesPath} from '../routes/rides';
 import {
   END_COORDINATES_ERROR,
-  FIELDS_TO_CHECK, RIDER_ERROR,
-  RIDES_NOT_FOUND_ERROR, SAMPLE_INJECTION,
-  SAMPLE_REQUEST_BODY,
-  SAMPLE_RESPONSE,
+  RIDER_ERROR, RIDES_NOT_FOUND_ERROR, SAMPLE_INJECTION,
+  SAMPLE_REQUEST_BODY, SAMPLE_RESPONSE,
   START_COORDINATES_ERROR,
-} from './mocks/instances';
-import {ridesPath} from '../src/routes/rides';
-import {healthPath} from '../src/routes/health';
-import HttpStatusCodes from '../src/utils/consts/http-statuses-codes';
+} from '../../tests/mocks/instances';
+import HttpStatusCodes from './consts/http-statuses-codes';
 
-describe('API tests', () => {
+describe('Utilities tests', () => {
   before(async () => {
     await database.init();
-  });
-
-  describe('/rides', () => {
-    it('should return an error with no Rides found after GET request', (done) => {
-      request(app)
-          .get(ridesPath)
-          .expect('Content-Type', 'application/json; charset=utf-8')
-          .expect((res) => expect(res.body).to.eql(RIDES_NOT_FOUND_ERROR))
-          .expect(HttpStatusCodes.NOT_FOUND, done);
-    });
-
-    it('should return a new Rides entity after POST request', (done) => {
-      request(app)
-          .post(ridesPath)
-          .send(SAMPLE_REQUEST_BODY)
-          .expect('Content-Type', 'application/json; charset=utf-8')
-          .expect((res) => {
-            expect(res.body).to.have.keys(...Object.keys(SAMPLE_RESPONSE));
-            expect(res.body).to.include(FIELDS_TO_CHECK);
-          })
-          .expect(HttpStatusCodes.CREATED, done);
-    });
-
-    it('should return Rides found after GET request', (done) => {
-      request(app)
-          .get(ridesPath)
-          .expect('Content-Type', 'application/json; charset=utf-8')
-          .expect((res) => expect(res.body.length).to.eql(1))
-          .expect(HttpStatusCodes.OK, done);
-    });
-  });
-
-  describe('/rides/:id', () => {
-    it('should return a Rides entity with a specified ID after GET request', (done) => {
-      request(app)
-          .get(`${ridesPath}/1`)
-          .expect('Content-Type', 'application/json; charset=utf-8')
-          .expect((res) => {
-            expect(res.body).to.have.keys(...Object.keys(SAMPLE_RESPONSE));
-            expect(res.body).to.include({'rideID': 1});
-          })
-          .expect(HttpStatusCodes.OK, done);
-    });
-
-    it('should return an error after GET request for the Rides entity with wrong ID', (done) => {
-      request(app)
-          .get(`${ridesPath}/666`)
-          .expect('Content-Type', 'application/json; charset=utf-8')
-          .expect((res) => expect(res.body).to.eql(RIDES_NOT_FOUND_ERROR))
-          .expect(HttpStatusCodes.NOT_FOUND, done);
-    });
   });
 
   describe('/rides POST validation', () => {
@@ -124,7 +69,7 @@ describe('API tests', () => {
       const postRide = (request, ridesIndex = 50) => {
         request.post(ridesPath).send(SAMPLE_REQUEST_BODY).end(() => {
           ridesIndex--;
-          ridesIndex ? postRide(request, ridesIndex) : done();
+            ridesIndex ? postRide(request, ridesIndex) : done();
         });
       };
       postRide(request(app));
@@ -172,16 +117,6 @@ describe('API tests', () => {
           .expect('Content-Type', 'application/json; charset=utf-8')
           .expect((res) => expect(res.body).to.eql(RIDES_NOT_FOUND_ERROR))
           .expect(HttpStatusCodes.NOT_FOUND, done);
-    });
-  });
-
-
-  describe('/health', () => {
-    it('should return health after GET request', (done) => {
-      request(app)
-          .get(healthPath)
-          .expect('Content-Type', /text/)
-          .expect(HttpStatusCodes.OK, done);
     });
   });
 });
